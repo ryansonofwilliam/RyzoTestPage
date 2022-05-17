@@ -1,0 +1,56 @@
+header{
+    text-align: center;
+    font-size: 40px;
+}
+body {
+    background-color: aquamarine;
+    color: blueviolet;
+    font-family: monospace;
+}
+p {
+    text-align: center;
+}
+
+.navbar {
+
+    float: right;
+    overflow: hidden;
+    /*below hides the navbar*/
+    /* display: none;  */
+}
+
+.navbar .dropdownbtn {
+    font-size: 16px;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 14px 16px;
+    background-color: inherit;
+    font-family: inherit; /* Important for vertical align on mobile phones */
+    margin: 0; /* Important for vertical align on mobile phones */
+}
+
+.dropdowncontents  {
+    overflow: hidden;
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 100px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+
+.dropdownbtn {
+    display: block;
+}
+
+.dropdown:hover .dropdowncontents:hover {
+    display: block;
+}
+
+
+.navbar:hover .dropdowncontents{
+    display: block;
+    background-color: #15ff00;
+}
