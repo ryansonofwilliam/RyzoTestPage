@@ -11,10 +11,10 @@ function addMenuItem(link, name) {
     menuLink.innerHTML = name;
     // add the menu items to the HTML
     menuItem.appendChild(menuLink);
-    menuContainer.appendChild(menuLink)
+    menuContainer.appendChild(menuItem);
     // add new line
-    var newLine = document.createElement('br')
-    menuContainer.appendChild(newLine)
+    // var newLine = document.createElement('br')
+    // menuContainer.appendChild(newLine)
 }
 
 // Add new Contents here using the function:
