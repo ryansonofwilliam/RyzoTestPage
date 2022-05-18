@@ -61,6 +61,6 @@ h1 {
     border-style: solid;
     color:rgba(0, 104, 122, 0.61);
     text-align: justify;
-    font-style:inherit
+    font-style:inherit;
     font-family: inherit;
 }
