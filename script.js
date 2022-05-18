@@ -1,9 +1,7 @@
 // simple script to inject elements to the contents menu
 
 function addMenuItem(link, name) {
-    // 
     var menuContainer =  document.querySelector('.dropdowncontents');
-    
     //create a list element
     var menuItem = document.createElement('li');
     menuItem.setAttribute('class', "menuItem");

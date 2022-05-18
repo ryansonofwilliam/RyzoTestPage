@@ -7,12 +7,12 @@ body {
     color: blueviolet;
     font-family: monospace;
 }
+
 p {
     text-align: center;
 }
 
 .navbar {
-
     float: right;
     overflow: hidden;
     /*below hides the navbar*/
@@ -53,4 +53,14 @@ p {
 .navbar:hover .dropdowncontents{
     display: block;
     background-color: #15ff00;
+}
+h1 {
+    border:rgb(102, 174, 187);
+    border-radius: 5%;
+    border-width: 5px;
+    border-style: solid;
+    color:rgba(0, 104, 122, 0.61);
+    text-align: justify;
+    font-style:inherit
+    font-family: inherit;
 }
