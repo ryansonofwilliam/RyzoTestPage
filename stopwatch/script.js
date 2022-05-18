@@ -1,5 +1,16 @@
 var container = document.getElementById("stop_watch_container");
 current_number = 00;
+
+const resizeOps = () => {
+  document.documentElement.style.setProperty(
+    "--vh",
+    window.innerHeight * 0.01 + "px"
+  );
+};
+
+resizeOps();
+window.addEventListener("resize", resizeOps);
+
 //Set the Title
 var title = document.createElement("p");
 title.setAttribute("class", "title");

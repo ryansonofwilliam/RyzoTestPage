@@ -6,15 +6,19 @@ body {
 #stop_watch_container {
   align-self: center;
   background-color: rgb(255, 153, 0);
-  margin: 7em;
-  padding-bottom: 2em;
+  margin: 5vw;
+  padding-bottom: 2vw;
   padding-top: 0.2em;
   border-radius: 30px;
   box-shadow: -2px 4px 0px 0px rgba(41, 107, 138, 1);
 }
 
 #stop_watch_container .title {
-  font-size: 40px;
+  font-size: 5vw;
+  padding-top: 0px;
+}
+#stop_watch_container .description {
+  font-size: 4vw;
 }
 
 #stop_watch_container p {
@@ -30,20 +34,27 @@ body {
   display: flex;
   justify-content: center;
   padding-top: 10px;
+  font-size: 20vw;
 }
 
 .button_container button {
-  padding-left: 10px;
-  padding-right: 10px;
-  margin-left: 10px;
+  padding-left: 1vw;
+  padding-right: 1vw;
+  margin-left: 10x;
   margin-right: 10px;
   border-radius: 10px;
   box-shadow: -2px 4px 0px 0px rgba(41, 107, 138, 1);
+  font-size: 5vw;
 }
 
 .counter_container {
   background-color: rgb(37, 158, 158);
-  margin-left: 20%;
-  margin-right: 20%;
+  margin-left: 20vw;
+  margin-right: 20vw;
   color: antiquewhite;
+  font-size: 20px;
+}
+
+.counter_container p {
+  font-size: 50px;
 }
