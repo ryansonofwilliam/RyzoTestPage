@@ -8,7 +8,7 @@ container.appendChild(title);
 
 //Set the description
 var description = document.createElement("p");
-description.setAttribute("class", "title");
+description.setAttribute("class", "description");
 description.innerText = "Vanilla JS Stopwatch";
 container.appendChild(description);
 
@@ -20,7 +20,7 @@ container.appendChild(counter_container);
 var displayed_number = document.createElement("p");
 displayed_number.setAttribute("class", "current_number");
 counter_container.appendChild(displayed_number);
-displayed_number.innerHTML = /*"Press Start"*/ current_number;
+displayed_number.innerHTML = "00 00 00";
 
 //Create a button container and add buttons
 var buttons = document.createElement("div");
@@ -47,7 +47,8 @@ var seconds = 0;
 // const day = hour * 24;
 // const year = day * 365;
 
-//Create a timer to start counting when start button is pressed
+//Create a timer to start counting when start button is pressed, and reacts properly
+//to the stop and reset buttons
 
 startbtn.onclick = function () {
   clearInterval(interval);

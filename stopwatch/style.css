@@ -1,16 +1,29 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron&display=swap");
+
+body {
+  background-color: grey;
+}
 #stop_watch_container {
   align-self: center;
   background-color: rgb(255, 153, 0);
-  margin: 7.6em;
+  margin: 7em;
   padding-bottom: 2em;
   padding-top: 0.2em;
+  border-radius: 30px;
+  box-shadow: -2px 4px 0px 0px rgba(41, 107, 138, 1);
+}
+
+#stop_watch_container .title {
+  font-size: 40px;
 }
 
 #stop_watch_container p {
   text-align: center;
   vertical-align: top;
+  font-size: large;
   padding: 0;
   position: relative;
+  font-family: "Orbitron", sans-serif;
 }
 
 .button_container {
@@ -24,6 +37,8 @@
   padding-right: 10px;
   margin-left: 10px;
   margin-right: 10px;
+  border-radius: 10px;
+  box-shadow: -2px 4px 0px 0px rgba(41, 107, 138, 1);
 }
 
 .counter_container {
