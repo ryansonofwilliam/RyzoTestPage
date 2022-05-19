@@ -51,9 +51,24 @@ buttons.appendChild(startbtn);
 buttons.appendChild(stopbtn);
 buttons.appendChild(resetbtn);
 
+function setStatus(status) {
+  if (status == "stopped") {
+    stopbtn.setAttribute("class", "inactive");
+  }
+  if (status == "reset") {
+    stopbtn.setAttribute("class", "inactive");
+    resetbtn.setAttribute("class", "inactive");
+  }
+  if (status == "running") {
+    stopbtn.setAttribute("class", "active");
+    resetbtn.setAttribute("class", "active");
+  }
+}
+
 //Create a timer to start counting when start button is pressed, and reacts properly
 //to the stop and reset buttons
 var start_flag = false;
+setStatus("reset");
 
 startbtn.onclick = function () {
   // Activates only if the flag is set to true and the timer is running
@@ -68,8 +83,9 @@ startbtn.onclick = function () {
       displayseconds +
       ":" +
       displaymillis;
+    setStatus("running");
     lap_time_list.insertBefore(saved_lap, lap_time_list.firstChild);
-    // lap_time_list.appendChild(saved_lap);
+    return;
     stopbtn.onclick = function () {
       clearInterval(interval);
       start_flag = false;
@@ -79,6 +95,7 @@ startbtn.onclick = function () {
   }
   // Activates whenever the timer is stopped
   if (start_flag == false) {
+    setStatus("running");
     clearInterval(interval);
     interval = setInterval(adder, 10);
     startbtn.innerText = "Lap!";
@@ -89,13 +106,16 @@ startbtn.onclick = function () {
 // Stops the timer
 stopbtn.onclick = function () {
   clearInterval(interval);
+  setStatus("stopped");
   //Add lap functionality
   start_flag = false;
   startbtn.innerText = "Start!";
+  timer_status = "stopped";
 };
 
 // resets the time
 resetbtn.onclick = function () {
+  setStatus("reset");
   clearInterval(interval);
   current_number = 00;
   seconds = 00;
@@ -121,17 +141,17 @@ function adder() {
     minutes++;
   }
 
-  if (current_number < 9) {
+  if (current_number <= 9) {
     displaymillis = "0" + current_number;
   } else {
     displaymillis = current_number;
   }
-  if (seconds < 9) {
+  if (seconds <= 9) {
     displayseconds = "0" + seconds;
   } else {
     displayseconds = seconds;
   }
-  if (minutes < 9) {
+  if (minutes <= 9) {
     displayminutes = "0" + minutes;
   } else {
     displayminutes = minutes;

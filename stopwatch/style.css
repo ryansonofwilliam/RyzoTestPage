@@ -47,6 +47,14 @@ body {
   font-size: 5vw;
 }
 
+.button_container button:hover {
+  cursor: pointer;
+}
+
+.button_container .inactive {
+  color: aliceblue;
+}
+
 .counter_container {
   background-color: rgb(37, 158, 158);
   margin-left: 20vw;
