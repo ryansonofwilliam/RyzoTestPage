@@ -53,6 +53,7 @@ body {
 
 .button_container .inactive {
   color: aliceblue;
+  opacity: 20%;
 }
 
 .counter_container {
