@@ -1,15 +1,9 @@
 var container = document.getElementById("stop_watch_container");
-current_number = 00;
-
-const resizeOps = () => {
-  document.documentElement.style.setProperty(
-    "--vh",
-    window.innerHeight * 0.01 + "px"
-  );
-};
-
-resizeOps();
-window.addEventListener("resize", resizeOps);
+var current_number = 00;
+var interval;
+var minutes = 0;
+var seconds = 0;
+var lap_number = 0;
 
 //Set the Title
 var title = document.createElement("p");
@@ -22,6 +16,14 @@ var description = document.createElement("p");
 description.setAttribute("class", "description");
 description.innerText = "Vanilla JS Stopwatch";
 container.appendChild(description);
+
+//Create text box for lap times
+var lap_time_container = document.createElement("div");
+var lap_time_list = document.createElement("ul");
+lap_time_container.setAttribute("class", "lap_time_container");
+lap_time_list.setAttribute("class", "lap_time_list");
+lap_time_container.appendChild(lap_time_list);
+container.appendChild(lap_time_container);
 
 //Create a counter container and contents
 var counter_container = document.createElement("div");
@@ -49,32 +51,62 @@ buttons.appendChild(startbtn);
 buttons.appendChild(stopbtn);
 buttons.appendChild(resetbtn);
 
-var interval;
-var minutes = 0;
-var seconds = 0;
-
-// const minute = 1000 * 60;
-// const hour = minute * 60;
-// const day = hour * 24;
-// const year = day * 365;
-
 //Create a timer to start counting when start button is pressed, and reacts properly
 //to the stop and reset buttons
+var start_flag = false;
 
 startbtn.onclick = function () {
-  clearInterval(interval);
-  interval = setInterval(adder, 10);
+  // Activates only if the flag is set to true and the timer is running
+  if (start_flag == true) {
+    lap_number++;
+    var saved_lap = document.createElement("li");
+    saved_lap.innerText =
+      lap_number +
+      ". " +
+      displayminutes +
+      ":" +
+      displayseconds +
+      ":" +
+      displaymillis;
+    lap_time_list.insertBefore(saved_lap, lap_time_list.firstChild);
+    // lap_time_list.appendChild(saved_lap);
+    stopbtn.onclick = function () {
+      clearInterval(interval);
+      start_flag = false;
+      startbtn.innerText = "Start!";
+      return;
+    };
+  }
+  // Activates whenever the timer is stopped
+  if (start_flag == false) {
+    clearInterval(interval);
+    interval = setInterval(adder, 10);
+    startbtn.innerText = "Lap!";
+    start_flag = true;
+  }
 };
 
+// Stops the timer
 stopbtn.onclick = function () {
   clearInterval(interval);
+  //Add lap functionality
+  start_flag = false;
+  startbtn.innerText = "Start!";
 };
+
+// resets the time
 resetbtn.onclick = function () {
   clearInterval(interval);
   current_number = 00;
   seconds = 00;
   minutes = 00;
   displayed_number.innerHTML = "Cleared";
+  //Add lap functionality
+  startbtn.innerText = "Start!";
+  start_flag = false;
+  //Add lap-time reset.
+  lap_time_list.innerHTML = "";
+  lap_number = 0;
 };
 
 function adder() {
@@ -84,7 +116,7 @@ function adder() {
     current_number = 00;
     seconds++;
   }
-  if (seconds > 60) {
+  if (seconds >= 60) {
     seconds = 0;
     minutes++;
   }
@@ -105,6 +137,6 @@ function adder() {
     displayminutes = minutes;
   }
 
-  displayed_number.innerHTML =
+  displayed_number.innerText =
     displayminutes + " " + displayseconds + " " + displaymillis;
 }
