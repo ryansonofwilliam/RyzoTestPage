@@ -70,18 +70,23 @@ resetbtn.onclick = resetTimer;
 function setStatus(status) {
   if (status == "stopped") {
     stopbtn.setAttribute("class", "inactive");
+    stopbtn.disabled = true;
     save_flag = "stopped";
     console.log("status = stopped");
   }
   if (status == "reset") {
     stopbtn.setAttribute("class", "inactive");
     resetbtn.setAttribute("class", "inactive");
+    stopbtn.disabled = true;
+    resetbtn.disabled = true;
     save_flag = "reset";
     console.log("status = reset");
   }
   if (status == "running") {
     stopbtn.setAttribute("class", "active");
     resetbtn.setAttribute("class", "active");
+    stopbtn.disabled = false;
+    resetbtn.disabled = false;
     save_flag = "running";
     console.log("status = running");
   }
@@ -92,7 +97,7 @@ function setStatus(status) {
 addEventListener("unload", saveState);
 addEventListener("load", loadState);
 
-//Save the state on exit --- WORKING
+//Save the state on exit
 function saveState() {
   exit_time = new Date().getTime();
   localStorage.setItem("exit_time", exit_time);
@@ -100,7 +105,7 @@ function saveState() {
   localStorage.setItem("flag", save_flag);
 }
 
-//load the details on window open and resume --- Broken somehow...
+//load the details on window open and resume
 function loadState() {
   console.log("loadState running");
   flag = localStorage.getItem("flag");
@@ -111,7 +116,7 @@ function loadState() {
   console.log(loaded_timer);
 
   if (flag == "stopped") {
-    current_number = loaded_timer;
+    current_number += loaded_timer;
     adder();
     counter_container.appendChild(displayed_number);
     console.log("current_number" + current_number);
@@ -127,8 +132,7 @@ function loadState() {
   }
 }
 
-//Create a timer to start counting when start button is pressed, and reacts properly
-//to the stop and reset buttons
+//Create a timer to start counting when start button is pressed, then change to lap.
 
 function startTimer() {
   // Starts the timer - activates only whenever the timer is stopped
@@ -159,7 +163,7 @@ function startTimer() {
   }
 }
 
-// Stops the timer
+//Stops the timer
 function stopTimer() {
   clearInterval(interval);
   setStatus("stopped");
@@ -169,7 +173,7 @@ function stopTimer() {
   return;
 }
 
-// resets the time
+//Resets the time
 function resetTimer() {
   setStatus("reset");
   clearInterval(interval);
@@ -194,7 +198,7 @@ function adder() {
   seconds = Math.floor(current_number / 100);
   minutes = Math.floor(current_number / 6000);
 
-  if (seconds >= 60) {
+  while (seconds >= 60) {
     seconds -= 60;
   }
   if (current_number <= 9) {
