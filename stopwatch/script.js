@@ -1,9 +1,19 @@
+// Declare some variables
 var container = document.getElementById("stop_watch_container");
 var current_number = 00;
+var stored_number = 00;
 var interval;
 var minutes = 0;
 var seconds = 0;
-var lap_number = 0;
+var lap_number = -1;
+var exit_time;
+var save_flag;
+var loaded_timer;
+var displayminutes;
+var displayseconds;
+var displaymillis;
+var start_flag = false;
+var first_run = true;
 
 //Set the Title
 var title = document.createElement("p");
@@ -51,28 +61,86 @@ buttons.appendChild(startbtn);
 buttons.appendChild(stopbtn);
 buttons.appendChild(resetbtn);
 
+//Set the buttons to functions
+startbtn.onclick = startTimer;
+stopbtn.onclick = stopTimer;
+resetbtn.onclick = resetTimer;
+
+//Set the class of buttons to hide when inactive using CSS --  NEED TO ADD INACTIVE
 function setStatus(status) {
   if (status == "stopped") {
     stopbtn.setAttribute("class", "inactive");
+    save_flag = "stopped";
+    console.log("status = stopped");
   }
   if (status == "reset") {
     stopbtn.setAttribute("class", "inactive");
     resetbtn.setAttribute("class", "inactive");
+    save_flag = "reset";
+    console.log("status = reset");
   }
   if (status == "running") {
     stopbtn.setAttribute("class", "active");
     resetbtn.setAttribute("class", "active");
+    save_flag = "running";
+    console.log("status = running");
+  }
+  localStorage.setItem("flag", save_flag);
+}
+
+//Save details to local storage so counter continues when window closed
+addEventListener("unload", saveState);
+addEventListener("load", loadState);
+
+//Save the state on exit --- WORKING
+function saveState() {
+  exit_time = new Date().getTime();
+  localStorage.setItem("exit_time", exit_time);
+  localStorage.setItem("timer", current_number);
+  localStorage.setItem("flag", save_flag);
+}
+
+//load the details on window open and resume --- Broken somehow...
+function loadState() {
+  console.log("loadState running");
+  flag = localStorage.getItem("flag");
+  saved_time = localStorage.getItem("timer");
+  time_then = localStorage.getItem("exit_time");
+  time_now = new Date().getTime();
+  loaded_timer = Math.floor((time_now - time_then + saved_time * 10) / 10);
+  console.log(loaded_timer);
+
+  if (flag == "stopped") {
+    current_number = loaded_timer;
+    adder();
+    counter_container.appendChild(displayed_number);
+    console.log("current_number" + current_number);
+    console.log("displayed_number" + displayed_number.innerText);
+    setStatus("stopped");
+  } else if (flag == "running") {
+    current_number = loaded_timer;
+    console.log("running save");
+    startTimer();
+  } else {
+    setStatus("reset");
+    console.log("no save");
   }
 }
 
 //Create a timer to start counting when start button is pressed, and reacts properly
 //to the stop and reset buttons
-var start_flag = false;
-setStatus("reset");
 
-startbtn.onclick = function () {
+function startTimer() {
+  // Starts the timer - activates only whenever the timer is stopped
+  if (save_flag == "stopped" || "reset") {
+    console.log("startTimer");
+    setStatus("running");
+    clearInterval(interval);
+    interval = setInterval(adder, 10);
+    startbtn.innerText = "Lap!";
+  }
   // Activates only if the flag is set to true and the timer is running
-  if (start_flag == true) {
+  if (save_flag == "running") {
     lap_number++;
     var saved_lap = document.createElement("li");
     saved_lap.innerText =
@@ -83,68 +151,56 @@ startbtn.onclick = function () {
       displayseconds +
       ":" +
       displaymillis;
-    setStatus("running");
-    lap_time_list.insertBefore(saved_lap, lap_time_list.firstChild);
+    if (startbtn.innerText == "Lap!" && first_run == false) {
+      lap_time_list.insertBefore(saved_lap, lap_time_list.firstChild);
+    }
+    first_run = false;
     return;
-    stopbtn.onclick = function () {
-      clearInterval(interval);
-      start_flag = false;
-      startbtn.innerText = "Start!";
-      return;
-    };
   }
-  // Activates whenever the timer is stopped
-  if (start_flag == false) {
-    setStatus("running");
-    clearInterval(interval);
-    interval = setInterval(adder, 10);
-    startbtn.innerText = "Lap!";
-    start_flag = true;
-  }
-};
+}
 
 // Stops the timer
-stopbtn.onclick = function () {
+function stopTimer() {
   clearInterval(interval);
   setStatus("stopped");
   //Add lap functionality
-  start_flag = false;
   startbtn.innerText = "Start!";
-  timer_status = "stopped";
-};
+  first_run = true;
+  return;
+}
 
 // resets the time
-resetbtn.onclick = function () {
+function resetTimer() {
   setStatus("reset");
   clearInterval(interval);
+  stored_number = 00;
+  localStorage.setItem("timer", 00);
   current_number = 00;
   seconds = 00;
   minutes = 00;
   displayed_number.innerHTML = "Cleared";
   //Add lap functionality
   startbtn.innerText = "Start!";
-  start_flag = false;
   //Add lap-time reset.
   lap_time_list.innerHTML = "";
   lap_number = 0;
-};
+  first_run = true;
+}
 
+//Generate and formats the timer
 function adder() {
   current_number++;
+  var tenths = current_number.toString().slice(-2);
+  seconds = Math.floor(current_number / 100);
+  minutes = Math.floor(current_number / 6000);
 
-  if (current_number > 99) {
-    current_number = 00;
-    seconds++;
-  }
   if (seconds >= 60) {
-    seconds = 0;
-    minutes++;
+    seconds -= 60;
   }
-
   if (current_number <= 9) {
-    displaymillis = "0" + current_number;
+    displaymillis = "0" + tenths;
   } else {
-    displaymillis = current_number;
+    displaymillis = tenths;
   }
   if (seconds <= 9) {
     displayseconds = "0" + seconds;
