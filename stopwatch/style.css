@@ -6,19 +6,20 @@ body {
 #stop_watch_container {
   align-self: center;
   background-color: rgb(255, 153, 0);
-  margin: 5vw;
+  margin-left: 10vw;
+  margin-right: 10vw;
   padding-bottom: 2vw;
-  padding-top: 0.2em;
+  padding-top: 1vw;
   border-radius: 30px;
   box-shadow: -2px 4px 0px 0px rgba(41, 107, 138, 1);
 }
 
 #stop_watch_container .title {
-  font-size: 5vw;
+  font-size: 4vw;
   padding-top: 0px;
 }
 #stop_watch_container .description {
-  font-size: 4vw;
+  font-size: 3vw;
 }
 
 #stop_watch_container p {
