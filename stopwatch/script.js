@@ -7,13 +7,16 @@ var minutes = 0;
 var seconds = 0;
 var lap_number = -1;
 var exit_time;
-var save_flag;
+var save_flag = "reset";
 var loaded_timer;
 var displayminutes;
 var displayseconds;
 var displaymillis;
 var start_flag = false;
 var first_run = true;
+var get_start_date;
+var get_current_date;
+var time_started;
 
 //Set the Title
 var title = document.createElement("p");
@@ -66,13 +69,14 @@ startbtn.onclick = startTimer;
 stopbtn.onclick = stopTimer;
 resetbtn.onclick = resetTimer;
 
-//Set the class of buttons to hide when inactive using CSS --  NEED TO ADD INACTIVE
+//Set the class of buttons to hide when inactive using CSS
 function setStatus(status) {
   if (status == "stopped") {
     stopbtn.setAttribute("class", "inactive");
     stopbtn.disabled = true;
     save_flag = "stopped";
     console.log("status = stopped");
+    stopped_time = current_number;
   }
   if (status == "reset") {
     stopbtn.setAttribute("class", "inactive");
@@ -103,6 +107,7 @@ function saveState() {
   localStorage.setItem("exit_time", exit_time);
   localStorage.setItem("timer", current_number);
   localStorage.setItem("flag", save_flag);
+  // localStorage.setItem("laps", document.querySelector("lap_time_list"));
 }
 
 //load the details on window open and resume
@@ -111,13 +116,15 @@ function loadState() {
   flag = localStorage.getItem("flag");
   saved_time = localStorage.getItem("timer");
   time_then = localStorage.getItem("exit_time");
+  lap_time_save = localStorage.getItem("laps");
+  // lap_time_container.innerHTML = lap_time_save;
   time_now = new Date().getTime();
   loaded_timer = Math.floor((time_now - time_then + saved_time * 10) / 10);
   console.log(loaded_timer);
 
   if (flag == "stopped") {
     current_number += loaded_timer;
-    adder();
+    newTimer();
     counter_container.appendChild(displayed_number);
     console.log("current_number" + current_number);
     console.log("displayed_number" + displayed_number.innerText);
@@ -136,15 +143,9 @@ function loadState() {
 
 function startTimer() {
   // Starts the timer - activates only whenever the timer is stopped
-  if (save_flag == "stopped" || "reset") {
-    console.log("startTimer");
-    setStatus("running");
-    clearInterval(interval);
-    interval = setInterval(adder, 10);
-    startbtn.innerText = "Lap!";
-  }
-  // Activates only if the flag is set to true and the timer is running
+
   if (save_flag == "running") {
+    setInterval(newTimer(), 10);
     lap_number++;
     var saved_lap = document.createElement("li");
     saved_lap.innerText =
@@ -161,11 +162,20 @@ function startTimer() {
     first_run = false;
     return;
   }
+  if (save_flag == "stopped" || "reset") {
+    console.log("startTimer");
+    time_started = new Date().getTime();
+    setStatus("running");
+    newTimer();
+    startbtn.innerText = "Lap!";
+  }
+  // Activates only if the flag is set to true and the timer is running
 }
 
 //Stops the timer
 function stopTimer() {
-  clearInterval(interval);
+  // clearInterval(interval);
+  time_stopped = get_current_date;
   setStatus("stopped");
   //Add lap functionality
   startbtn.innerText = "Start!";
@@ -176,9 +186,10 @@ function stopTimer() {
 //Resets the time
 function resetTimer() {
   setStatus("reset");
-  clearInterval(interval);
+  // clearInterval(interval);
   stored_number = 00;
-  localStorage.setItem("timer", 00);
+  localStorage.setItem("timer", current_number);
+  //Format stuff
   current_number = 00;
   seconds = 00;
   minutes = 00;
@@ -191,18 +202,35 @@ function resetTimer() {
   first_run = true;
 }
 
-//Generate and formats the timer
-function adder() {
-  current_number++;
-  var tenths = current_number.toString().slice(-2);
-  seconds = Math.floor(current_number / 100);
-  minutes = Math.floor(current_number / 6000);
+//Generate and formats the timer THIS NEEDS TO CHANGE TO A DATE BASED THING.
+function newTimer() {
+  if (save_flag == "running") {
+    console.log('newTimer "running"');
+    get_current_date = new Date().getTime();
+    current_number = get_current_date - time_started;
+    outputFormatter();
+  }
+
+  // if the timer is stopped
+  if (save_flag == "stopped") {
+    current_number = get_current_date + stopped_time - get_start_date;
+    outputFormatter();
+  }
+}
+
+function outputFormatter() {
+  tenths = current_number.toString().slice(-3, -1);
+  seconds = Math.floor(current_number / 1000);
+  minutes = Math.floor(current_number / 60000);
 
   while (seconds >= 60) {
     seconds -= 60;
   }
-  if (current_number <= 9) {
+  if (tenths <= 9) {
     displaymillis = "0" + tenths;
+    if (tenths == "") {
+      displaymillis = "00";
+    }
   } else {
     displaymillis = tenths;
   }
@@ -220,3 +248,32 @@ function adder() {
   displayed_number.innerText =
     displayminutes + " " + displayseconds + " " + displaymillis;
 }
+
+/// NOW DEFUNCT Using Date() is more accurate
+// function adder() {
+//   var tenths = current_number.toString().slice(-2);
+//   seconds = Math.floor(current_number / 10000);
+//   minutes = Math.floor(current_number / 600000);
+
+//   while (seconds >= 60) {
+//     seconds -= 60;
+//   }
+//   if (current_number <= 9) {
+//     displaymillis = "0" + tenths;
+//   } else {
+//     displaymillis = tenths;
+//   }
+//   if (seconds <= 9) {
+//     displayseconds = "0" + seconds;
+//   } else {
+//     displayseconds = seconds;
+//   }
+//   if (minutes <= 9) {
+//     displayminutes = "0" + minutes;
+//   } else {
+//     displayminutes = minutes;
+//   }
+
+//   displayed_number.innerText =
+//     displayminutes + " " + displayseconds + " " + displaymillis;
+// }
