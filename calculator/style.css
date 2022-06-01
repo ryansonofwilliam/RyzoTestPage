@@ -1,0 +1,70 @@
+@import url(https://fonts.googleapis.com/css2?family=VT323&display=swap);
+
+.main_container {
+  min-width: 150px;
+  align-self: center;
+  background-color: rgba(104, 102, 99, 0.945);
+  margin-left: 20vw;
+  margin-right: 20vw;
+  margin-top: 3vw;
+  padding-bottom: 2vw;
+  padding-top: 1vw;
+  border-radius: 15px;
+  box-shadow: -2px 4px 0px 0px rgb(134, 138, 139);
+}
+
+.main_container .title {
+  text-align: center;
+  font-family: VT323;
+  font-size: 10vw;
+  margin-bottom: 1vw;
+}
+
+.main_container .displayed_number {
+  text-align: center;
+  font-family: VT323;
+  font-size: 7vw;
+  background-color: black;
+  color: lawngreen;
+  margin: 2vw;
+  padding-top: 1vw;
+  padding-bottom: 1vw;
+}
+
+.main_container .button_container {
+  min-width: 150px;
+  margin-left: 2vw;
+  color: rgb(7, 3, 3);
+  padding: 1vw;
+  display: flex;
+  margin: auto;
+  /* width: 50%; */
+  justify-content: center;
+  font-size: 5vw;
+}
+
+.main_container .button_container .number_buttons button {
+  display: inline-flex;
+  align-items: center;
+  border: 2px;
+  padding-bottom: 0px;
+  margin-bottom: 2px;
+  height: 24%;
+  font-size: 5vw;
+
+  /* font-size: 100%; */
+  /* width: 25%; */
+  /* float: inline-end; */
+}
+.main_container .button_container .operator_buttons {
+  display: flex;
+  flex-direction: column;
+}
+.main_container .button_container .operator_buttons button {
+  text-align: center;
+  vertical-align: center;
+  font-size: 5vw;
+}
+button {
+  border-radius: 3px;
+}

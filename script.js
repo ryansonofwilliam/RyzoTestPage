@@ -20,4 +20,4 @@ function addMenuItem(link, name) {
 // Add new Contents here using the function:
 addMenuItem("./To_do_list_site/index.html", "To Do List");
 addMenuItem("./stopwatch/stopwatch.html", "StopWatch");
-addMenuItem("#", "Placeholder 2");
+addMenuItem("./calculator/calculator.html", "Calculator WIP");
